@@ -277,6 +277,8 @@ $\gamma \times \gamma \times \dots \times \gamma = \gamma^{T}$
 
 <GradientDecay />
 
+<div class="text-xs opacity-60 text-right">Biểu đồ vẽ từ công thức với hệ số tự chọn, chưa phải mạng thật. Số đo trên mạng thật: slide 20.</div>
+
 <!--
 **[Người 1 · ~2 phút]**
 
@@ -289,6 +291,8 @@ Nếu hệ số nhỏ hơn 1, tín hiệu teo dần về 0. Ta gọi là gradien
 **(Demo)** Mình thử trên biểu đồ. Thanh trượt trên cùng là số bước cần nhớ lại, tức khoảng cách từ chữ "Pháp" tới chỗ trống, đang là 50. Thanh thứ hai là hệ số mỗi bước, đang là 0.9, tức mỗi bước tín hiệu chỉ giữ lại 90%. Nghe thì có vẻ nhiều, nhưng sau 50 bước, tín hiệu chỉ còn khoảng nửa phần trăm. Kéo số bước lên 100 thì gần như bằng 0. Còn nếu kéo hệ số lên 1.1, đường cong vọt lên trên: đó là bùng nổ.
 
 Ta không thể giữ hệ số đúng bằng 1, vì trọng số thay đổi liên tục trong quá trình học. Đó là lý do RNN không nối được chữ "Pháp" với chữ "tiếng".
+
+Lưu ý: biểu đồ này vẽ thẳng từ công thức, hệ số mỗi bước do mình tự chọn, chưa phải một mạng nơ-ron cụ thể. Ở slide 20, bạn Hiếu sẽ đo trên một mạng thật đã huấn luyện, có số lớp và số nơ-ron rõ ràng.
 -->
 
 ---
@@ -730,14 +734,85 @@ Công thức nằm dưới mỗi dòng cho bạn nào muốn đối chiếu vớ
 
 ---
 
+# Viết thành code: ô LSTM = ghép các hàm sơ cấp
+
+<div class="text-sm mb-2">Chỉ dùng NumPy, không dùng PyTorch hay Keras. Cả ô LSTM được ghép từ <b>5 hàm sơ cấp</b> (<i>elementary functions</i>):</div>
+
+<div class="grid grid-cols-[1fr_1.45fr] gap-4 code-sm">
+<div>
+
+```python {all|3|4-5|6|7}
+import numpy as np
+
+def affine(x, W, b): return x @ W + b  # nhân trọng số, cộng độ lệch
+def sigmoid(z): return 1 / (1 + np.exp(-z))  # độ mở van, 0..1
+def tanh(z):    return np.tanh(z)            # nén về -1..1
+def mul(a, b):  return a * b  # nhân từng phần tử
+def add(a, b):  return a + b  # cộng từng phần tử
+```
+
+</div>
+<div>
+
+```python {all|3|4-7|8|9|11-15}
+def lstm_cell(x, h_prev, c_prev, W, b):
+    H = h_prev.shape[1]                 # số nơ-ron ẩn
+    z = affine(np.concatenate([x, h_prev], 1), W, b)  # 4 phần cùng lúc
+    i = sigmoid(z[:, 0*H:1*H])          # cổng ghi
+    f = sigmoid(z[:, 1*H:2*H])          # cổng quên
+    g = tanh(z[:, 2*H:3*H])             # nội dung mới
+    o = sigmoid(z[:, 3*H:4*H])          # cổng đọc
+    c = add(mul(f, c_prev), mul(i, g))  # xóa bớt rồi cộng thêm
+    h = mul(o, tanh(c))                 # đọc ra
+    return h, c
+
+def lstm(X, W, b, H):                   # X: (số mẫu, số bước, số đầu vào)
+    h = c = np.zeros((len(X), H))
+    for t in range(X.shape[1]):         # lặp theo thời gian,
+        h, c = lstm_cell(X[:, t], h, c, W, b)  # dùng lại cùng W, b
+    return h
+```
+
+</div>
+</div>
+
+<div class="flex items-center gap-4 mt-1 text-xs">
+<div v-click class="p-1 px-2 rounded bg-slate-100 whitespace-nowrap">Gộp lại: <code>h = mul(o, tanh(add(mul(f, c_prev), mul(i, g))))</code></div>
+<div class="opacity-70">Bản đầy đủ (lan truyền ngược, huấn luyện, kiểm tra với PyTorch): <code>experiment/lstm_numpy.ipynb</code></div>
+</div>
+
+<style>
+.code-sm .slidev-code { font-size: .6rem !important; line-height: 1.4 !important; }
+</style>
+
+<!--
+**[Người 2 · ~2 phút]**
+
+Bốn việc vừa rồi viết thành code thì trông thế nào? Nhóm tự viết lại LSTM chỉ bằng thư viện NumPy, không dùng PyTorch hay Keras, để thấy rằng bên trong không có gì bí ẩn: cả ô LSTM chỉ là ghép năm hàm sơ cấp lại với nhau, hay còn gọi là elementary functions.
+
+Bên trái là năm hàm đó. [click] Hàm thứ nhất: nhân đầu vào với trọng số rồi cộng độ lệch. [click] Hai hàm tiếp theo là sigmoid, cho ra số từ 0 đến 1 giống độ mở của van, và tanh, nén số về khoảng từ trừ 1 đến 1. [click] Hàm thứ tư nhân từng phần tử với nhau. [click] Hàm cuối cùng cộng từng phần tử.
+
+Bên phải là một ô LSTM. [click] Dòng đầu tiên: ghép đầu vào hiện tại với đầu ra của bước trước, rồi nhân với trọng số. Bốn bộ trọng số của bốn phần được đặt cạnh nhau trong một ma trận lớn, nên chỉ cần một phép nhân. [click] Bốn dòng tiếp theo cắt kết quả thành bốn đoạn: ba cổng dùng sigmoid, nội dung mới dùng tanh. [click] Dòng cập nhật bộ nhớ: nhân cổng quên với bộ nhớ cũ, nhân cổng ghi với nội dung mới, rồi cộng lại. Đúng câu "xóa bớt rồi cộng thêm". [click] Dòng đọc ra: cổng đọc nhân với tanh của bộ nhớ.
+
+[click] Hàm cuối cùng chạy ô LSTM lần lượt qua từng bước của chuỗi, và ở mọi bước đều dùng lại đúng một bộ trọng số.
+
+[click] Nếu viết gộp lại, cả ô LSTM chỉ là một biểu thức lồng các hàm sơ cấp vào nhau, như dòng ở dưới cùng.
+
+Vì mỗi hàm sơ cấp đều có đạo hàm đơn giản, nên khi học, ta chỉ cần đi ngược lại đúng các dòng này. Bạn Hiếu sẽ cho xem phần đi ngược ở phần sau.
+-->
+
+---
+
 # Thử tay: theo dõi bộ nhớ của một ô LSTM
 
 <LstmSimulator />
 
+<div class="text-xs opacity-70 mt-1">Mô hình đồ chơi để nhìn các cổng: <b>1 lớp, 1 ô LSTM, 1 nơ-ron</b> (bộ nhớ là 1 con số), trọng số nhóm đặt bằng tay, không qua huấn luyện.</div>
+
 <!--
 **[Người 2 · ~3 phút] — slide demo, nên để chủ động thời gian**
 
-Bây giờ mình chạy thử một ô LSTM thu nhỏ, trong đó bộ nhớ chỉ là một con số, để các bạn nhìn thấy các cổng hoạt động.
+Bây giờ mình chạy thử một ô LSTM thu nhỏ để các bạn nhìn thấy các cổng hoạt động. Nói rõ kích thước: đây là 1 lớp, chỉ có 1 nơ-ron, nên bộ nhớ chỉ là một con số. Nó chính là hàm ô LSTM vừa viết ở slide trước, chỉ thu nhỏ lại.
 
 Trọng số của ô này nhóm đặt sẵn, không phải học, sao cho đầu vào có ý nghĩa dễ hiểu, như ô chú thích bên phải: đầu vào bằng 2 nghĩa là "đây là thông tin quan trọng, hãy ghi nhớ", giống chữ "Pháp". Đầu vào bằng 0 là một từ bình thường. Đầu vào bằng trừ 2 nghĩa là "hết ngữ cảnh rồi, hãy xóa đi".
 
@@ -840,24 +915,99 @@ Khi huấn luyện, mạng đoán sai ở chữ cuối, và tín hiệu lỗi ph
 
 ---
 
-# Thử tay: RNN và LSTM sau nhiều bước
+# Trong code: con đường thẳng nằm ở đâu?
 
-<div class="mt-4">
-<GradientDecay lstm />
+<div class="text-sm mb-2">Khi học, đi ngược lại đúng các dòng của slide 15. Mỗi hàm sơ cấp có một hàm đạo hàm (quy tắc dây chuyền cho đúng một phép toán):</div>
+
+<div class="grid grid-cols-[1fr_1.35fr] gap-4 code-sm">
+<div>
+
+```python
+def affine_back(d, x, W): return d @ W.T, x.T @ d, d.sum(0)
+def sigmoid_back(d, s):   return d * s * (1 - s)
+def tanh_back(d, t):      return d * (1 - t * t)
+def mul_back(d, a, b):    return d * b, d * a
+def add_back(d):          return d, d
+```
+
+<div v-click="2" class="mt-3">
+
+<div class="text-xs text-orange-600 font-bold mb-1">RNN, mỗi bước lùi:</div>
+
+```python
+dz = tanh_back(dh, h)       # qua đạo hàm tanh
+dx, dh_prev, dW, db = affine_back(dz, ...)  # qua trọng số W
+```
+
+<div class="text-xs mt-1">→ tín hiệu về bước trước <b>luôn</b> bị nhân với đạo hàm tanh và trọng số</div>
+
+</div>
+</div>
+<div>
+
+<div class="text-xs text-blue-600 font-bold mb-1">LSTM, mỗi bước lùi (đi ngược từ dưới lên):</div>
+
+```python {all|5}
+def lstm_cell_back(dh, dc, cache):
+    do, dtc = mul_back(dh, o, tanh_c)           # h = o * tanh(c)
+    dc = dc + tanh_back(dtc, tanh_c)
+    dfc, dig = add_back(dc)                     # c = f*c_prev + i*g
+    df, dc_prev = mul_back(dfc, f, c_prev)      # dc_prev = dfc * f
+    di, dg = mul_back(dig, i, g)
+    dz = concat(sigmoid_back(di, i), sigmoid_back(df, f),
+                tanh_back(dg, g), sigmoid_back(do, o))
+    dx, dh_prev, dW, db = affine_back(dz, ...)
+    return dx, dh_prev, dc_prev, dW, db
+```
+
+<div v-click="1" class="text-xs mt-1 p-2 rounded bg-blue-50">Dòng 5: tín hiệu về bộ nhớ cũ = tín hiệu ở bộ nhớ mới × <b>cổng quên</b>. Không có trọng số, không có tanh. Đây là con đường thẳng của slide 18.</div>
+
+</div>
 </div>
 
-<div class="mt-4 text-center text-sm opacity-80">Ví dụ: 100 bước, RNN mỗi bước × 0.9, LSTM mỗi bước × 0.99 → RNN còn khoảng 0.003%, LSTM còn khoảng 37%</div>
+<div v-click="3" class="text-xs mt-2 text-center">Kiểm tra: đạo hàm tự viết khớp phép tính số (sai số ~10⁻⁹) và khớp PyTorch (sai số ~10⁻¹⁶). Code trên đã rút gọn phần lưu dữ liệu trung gian.</div>
+
+<style>
+.code-sm .slidev-code { font-size: .6rem !important; line-height: 1.4 !important; }
+</style>
 
 <!--
-**[Người 3 · ~1 phút]**
+**[Người 3 · ~2 phút]**
 
-Đây là biểu đồ của bạn Đại ở slide 5, thêm đường màu xanh cho LSTM. Trục ngang là số bước đi ngược về quá khứ, trục dọc là phần trăm tín hiệu lỗi còn lại.
+Ở slide 15, bạn Minh đã cho xem phần tính xuôi của LSTM viết bằng NumPy. Khi học, máy phải đi ngược lại để tính tín hiệu lỗi. Vì ô LSTM chỉ là ghép năm hàm sơ cấp, nên phần đi ngược cũng chỉ là năm hàm đạo hàm, như bên trái. Mỗi hàm nhận tín hiệu lỗi ở đầu ra và trả về tín hiệu lỗi ở đầu vào. Ví dụ đạo hàm của phép cộng là chia đều tín hiệu cho cả hai vế, đạo hàm của phép nhân là nhân chéo.
 
-**(Demo)** Mình đặt số bước bằng 100. RNN mỗi bước nhân 0.9, còn LSTM có cổng quên bằng 0.99. Sau 100 bước, RNN chỉ còn khoảng ba phần nghìn của một phần trăm, còn LSTM vẫn còn khoảng 37 phần trăm. Chênh nhau hơn mười nghìn lần.
+Bên phải là phần đi ngược của một ô LSTM. Các bạn để ý nó đi ngược đúng các dòng của phần tính xuôi, từ dòng đọc ra, lên dòng cập nhật bộ nhớ, lên các cổng, cuối cùng là phép nhân trọng số.
 
-Kéo cổng quên lên đúng 1 thì đường xanh nằm ngang: tín hiệu không mất chút nào. Đó chính là ô nhớ giữ nguyên năm 1997.
+[click] Dòng quan trọng nhất là dòng thứ năm. Tín hiệu lỗi gửi về bộ nhớ của bước trước bằng tín hiệu ở bộ nhớ hiện tại nhân với cổng quên. Chỉ vậy thôi: không có trọng số, không có tanh. Đây chính là con đường thẳng mà mình vừa nói ở slide trước, giờ các bạn thấy nó nằm ở đâu trong code.
 
-Điểm khác biệt cốt lõi: hệ số của RNN phụ thuộc trọng số và hàm tanh, rất khó giữ gần 1. Còn cổng quên của LSTM là thứ mạng có thể chủ động học để giữ gần 1 khi cần nhớ.
+[click] So với RNN: mỗi bước lùi chỉ có hai dòng, nhưng tín hiệu về bước trước luôn phải đi qua đạo hàm của tanh rồi qua trọng số. Không có đường nào tránh được hai thứ đó.
+
+[click] Để chắc code đúng, nhóm kiểm tra hai cách: so với đạo hàm tính bằng cách nhích từng trọng số một chút rồi xem sai số thay đổi bao nhiêu, và so với PyTorch. Cả hai đều khớp gần như tuyệt đối. Code trên slide đã rút gọn phần lưu dữ liệu trung gian, bản đầy đủ nằm trong notebook.
+-->
+
+---
+
+# Đo trên mạng thật: tín hiệu lỗi về được bao xa?
+
+<div class="text-xs leading-snug p-2 rounded bg-slate-100 mb-3">
+<div><b>Mô hình</b> (viết bằng NumPy, code ở slide 15 và 19): mỗi bước nhận <b>2 số</b> → <b>1 lớp</b> RNN hoặc LSTM, <b>64 nơ-ron ẩn</b> → <b>1 nơ-ron</b> đầu ra. LSTM có 17 217 trọng số, RNN có 4 353.</div>
+<div><b>Huấn luyện</b> 5000 lần cập nhật trên bài toán cộng, chuỗi <b>100 bước</b>: phải nhớ một số được đánh dấu ở nửa đầu chuỗi (chi tiết ở thí nghiệm 3). Đo trên 2000 mẫu kiểm tra.</div>
+</div>
+
+<SignalReach />
+
+<!--
+**[Người 3 · ~2 phút]**
+
+Hai slide trước là lý thuyết và code. Bây giờ mình đo thật. Nói rõ mô hình: mỗi bước nhận vào 2 số, đi qua 1 lớp RNN hoặc 1 lớp LSTM có 64 nơ-ron ẩn, cuối cùng là 1 nơ-ron cho ra kết quả. LSTM có khoảng 17 nghìn trọng số, RNN khoảng 4 nghìn 4, vì LSTM có 4 bộ trọng số. Cả hai được huấn luyện bằng chính code NumPy vừa rồi, trên bài toán cộng với chuỗi 100 bước. Bài toán này mình sẽ nói kỹ ở thí nghiệm 3; ở đây chỉ cần biết mô hình phải nhớ một con số ở nửa đầu chuỗi cho tới cuối chuỗi.
+
+Cách đo: ở bước cuối, gửi một tín hiệu lỗi ngược về, rồi xem ở từng bước trong quá khứ còn lại bao nhiêu phần trăm so với ở bước cuối. Trục dọc chia theo cấp số nhân, mỗi vạch nhỏ đi một trăm nghìn lần.
+
+**(Demo)** Bấm "Lúc mới khởi tạo", chưa học gì. Kéo thanh về 50 bước: RNN gần như bằng 0, LSTM cũng đã rất nhỏ, khoảng năm phần trăm của một phần trăm. Lúc chưa học, LSTM cũng quên, vì cổng quên mới ở khoảng 0.73.
+
+Bấm "Sau khi học". Đường xanh của LSTM gần như nằm ngang: từ khoảng 10 bước trở về trước, tín hiệu giữ ở khoảng 20 đến 25 phần trăm, kéo tới 99 bước vẫn còn. Mạng đã tự học cách giữ bộ nhớ: trong 64 nơ-ron, có một nơ-ron có cổng quên trung bình 0.96, cao hẳn các nơ-ron còn lại, nó làm nhiệm vụ mang con số được đánh dấu tới cuối chuỗi. Đường cam của RNN thì không đổi: lùi 50 bước chỉ còn khoảng một phần tỷ của một phần trăm.
+
+Kết quả học khớp với điều đó: sai số của RNN đứng ở mức đoán mò, còn LSTM nhỏ hơn khoảng 160 lần. Đây cũng là câu trả lời cho slide 5: hiện tượng tín hiệu lỗi biến mất không chỉ là công thức, mà đo được trên mạng thật.
 -->
 
 ---
