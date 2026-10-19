@@ -1,10 +1,102 @@
-/* Chú thích ký hiệu dùng chung cho các slide có công thức */
+/* ===== Giao diện chung ===== */
+:root {
+  --ink: #0f172a;
+  --muted: #64748b;
+  --brand: #2563eb;
+  --brand2: #7c3aed;
+  --line: #e2e8f0;
+}
+
+.slidev-layout {
+  color: #1e293b;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(37, 99, 235, .07), transparent 32%),
+    radial-gradient(circle at 0% 100%, rgba(124, 58, 237, .05), transparent 30%),
+    #ffffff;
+  padding-bottom: 2.1rem !important; /* chừa chỗ cho footer */
+}
+
+/* Tiêu đề: gọn một dòng, có vạch màu bên dưới */
+.slidev-layout h1 {
+  font-size: 1.85rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  margin-bottom: .9rem;
+}
+.slidev-layout h1::after {
+  content: '';
+  display: block;
+  width: 2.75rem;
+  height: 4px;
+  margin-top: .4rem;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--brand2));
+}
+.slidev-layout.text-center h1::after,
+.slidev-layout .text-center h1::after { margin-left: auto; margin-right: auto; }
+.slidev-layout h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .3rem; }
+
+/* Ô ghi chú (callout): bo góc, viền trái theo màu nền */
+.slidev-layout .rounded[class*='bg-'] {
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, .06);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 6px 16px -8px rgba(15, 23, 42, .12);
+}
+.slidev-layout .rounded.bg-blue-50 { border-left: 4px solid #3b82f6; }
+.slidev-layout .rounded.bg-orange-50 { border-left: 4px solid #f97316; }
+.slidev-layout .rounded.bg-amber-50 { border-left: 4px solid #f59e0b; }
+.slidev-layout .rounded.bg-green-50 { border-left: 4px solid #22c55e; }
+.slidev-layout .rounded.bg-red-50 { border-left: 4px solid #ef4444; }
+.slidev-layout .rounded.bg-purple-50 { border-left: 4px solid #a855f7; }
+.slidev-layout .rounded.bg-slate-100 { border-left: 4px solid #94a3b8; background: #f8fafc; }
+
+/* Bảng markdown (bảng trong component chỉ có tbody nên không bị ảnh hưởng) */
+.slidev-layout table:has(> thead) {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.slidev-layout thead th {
+  background: #f1f5f9;
+  color: #334155;
+  font-weight: 700;
+  border-bottom: 1px solid var(--line);
+}
+.slidev-layout table:has(> thead) tbody td { border-bottom: 1px solid #f1f5f9; }
+.slidev-layout table:has(> thead) tbody tr:last-child td { border-bottom: 0; }
+.slidev-layout table:has(> thead) tbody tr:nth-child(even) td { background: #fafbfc; }
+.slidev-layout table:has(> thead) tbody td:first-child { font-weight: 600; color: #334155; }
+
+/* Khối code */
+.slidev-layout .slidev-code-wrapper,
+.slidev-layout pre.slidev-code {
+  border-radius: 10px !important;
+}
+.slidev-layout pre.slidev-code { border: 1px solid var(--line); }
+
+/* Danh sách: chấm tròn màu thương hiệu */
+.slidev-layout ul > li::marker { color: var(--brand); }
+
+/* Thẻ có viền trên màu (--c), dùng ở slide mẹo cài đặt, ứng dụng */
+.use-card { background: #fff; border: 1px solid #e2e8f0; border-top: 4px solid var(--c); border-radius: 12px; padding: .6rem 1.1rem .5rem; box-shadow: 0 8px 20px -14px rgba(15, 23, 42, .35); }
+.use-card h3 { color: var(--c); margin-top: 0 !important; }
+.use-card li { font-size: .9rem; line-height: 1.45; margin: .25rem 0; }
+.tips p { font-size: .9rem; line-height: 1.45; }
+.tips .slidev-code { font-size: .66rem !important; line-height: 1.5 !important; }
+
+/* ===== Chú thích ký hiệu dùng chung cho các slide có công thức ===== */
 .legend { font-size: .75rem; line-height: 1.35; }
 .legend ul { margin: 0; padding-left: 1rem; }
 .legend li { margin: .1rem 0; }
 .legend .katex { font-size: 1em; }
 
-/* Các slide thí nghiệm RNN so với LSTM (slide 22–25) */
+/* ===== Các slide thí nghiệm RNN so với LSTM (slide 22–25) ===== */
 .small, .small p, .small li { font-size: .78rem; line-height: 1.35; }
 .small p, .small ul { margin: .15rem 0; }
 .exp table { font-size: .74rem; line-height: 1.2; }
@@ -13,3 +105,47 @@
 .exp td:nth-child(4) { text-align: center; }
 .crnn { color: #ea580c; }
 .clstm { color: #2563eb; }
+
+/* ===== Slide bìa, slide chuyển phần, slide cuối ===== */
+.slidev-layout.hero {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(37, 99, 235, .14), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(124, 58, 237, .14), transparent 40%),
+    linear-gradient(180deg, #f8fafc, #eef2ff);
+}
+.slidev-layout.hero h1::after { display: none; }
+.grad-text {
+  background: linear-gradient(90deg, #1d4ed8, #7c3aed);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+.kicker {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--brand);
+  background: rgba(37, 99, 235, .08);
+  border: 1px solid rgba(37, 99, 235, .18);
+  padding: .2rem .7rem;
+  border-radius: 999px;
+}
+.glass {
+  background: rgba(255, 255, 255, .75);
+  border: 1px solid rgba(15, 23, 42, .07);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px -12px rgba(30, 41, 59, .25);
+  backdrop-filter: blur(6px);
+}
+.chip {
+  display: inline-block;
+  padding: .15rem .65rem;
+  margin: .15rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: .8rem;
+  color: #334155;
+}

@@ -11,26 +11,35 @@ fonts:
   sans: Be Vietnam Pro
   mono: JetBrains Mono
 layout: cover
-class: text-center
+class: text-center hero
 clicks: 2
 ---
 
-# LSTM
-## Long Short-Term Memory
-<div class="text-lg opacity-70">mạng có "trí nhớ ngắn hạn nhưng giữ được lâu"</div>
+<div class="kicker">Nhóm 5 · Học sâu</div>
 
-<div class="mt-10 text-xl hook">
+<h1 class="cover-title grad-text">LSTM</h1>
+<div class="cover-sub">Long Short-Term Memory</div>
+<div class="text-base opacity-70 mt-1">mạng có "trí nhớ ngắn hạn nhưng giữ được lâu"</div>
+
+<svg viewBox="0 0 600 24" class="mx-auto mt-4" style="width: 420px">
+  <line x1="10" y1="12" x2="590" y2="12" stroke="#2563eb" stroke-width="3" stroke-linecap="round" opacity=".35"/>
+  <circle v-for="k in 6" :key="k" :cx="10 + (k - 1) * 116" cy="12" r="6" fill="#fff" stroke="#2563eb" stroke-width="2.5"/>
+</svg>
+
+<div class="glass hook mx-auto mt-5 px-6 py-4 text-xl">
 <span>"Tôi lớn lên ở </span><span class="key" :class="{ fade: $clicks >= 2 }">Pháp</span><span>, </span>
 <span v-click="1" class="mid">… học tiểu học, chuyển nhà ba lần, chơi bóng đá, mê truyện tranh, làm quen bạn mới …</span>
 <span>, nên tôi nói thành thạo tiếng </span><span class="blank">___</span>"
 </div>
 
-<div class="abs-b mb-8 w-full text-sm opacity-70">
-<div class="font-bold">Nhóm 5</div>
-<div>Nguyễn Phú Đại · Trần Vũ Tiến Minh · Trần Đình Hiếu · Phạm Thanh An</div>
+<div class="abs-b mb-7 w-full">
+<span class="chip">Nguyễn Phú Đại</span><span class="chip">Trần Vũ Tiến Minh</span><span class="chip">Trần Đình Hiếu</span><span class="chip">Phạm Thanh An</span>
 </div>
 
 <style>
+.cover-title { font-size: 5.5rem !important; font-weight: 800; line-height: 1.05 !important; margin: .6rem 0 0 !important; letter-spacing: -.02em; }
+.cover-sub { font-size: 1.6rem; font-weight: 600; color: #334155; }
+.hook { max-width: 52rem; }
 .hook .key { color: #2563eb; font-weight: 800; transition: opacity 2.5s; }
 .hook .key.fade { opacity: .12; }
 .hook .mid { opacity: .6; font-style: italic; }
@@ -51,6 +60,7 @@ Mở đầu bằng một trò chơi nhỏ. Các bạn đọc câu này: "Tôi l�
 
 ---
 layout: center
+part: 1
 ---
 
 # LSTM nằm ở đâu trong các loại mạng nơ-ron?
@@ -252,7 +262,7 @@ Các bạn để ý mũi tên màu cam: thông tin từ đầu câu muốn tới
 # Vấn đề: RNN "quên" khi học
 
 <div class="grid grid-cols-[1.25fr_1fr] gap-6 items-center">
-<div class="text-sm">
+<div class="text-sm prob">
 
 Mạng đoán sai ở chỗ trống → **tín hiệu lỗi** (*gradient*: cho biết cần sửa trọng số theo hướng nào) phải đi ngược từ cuối câu về tận chữ "Pháp".
 
@@ -278,6 +288,10 @@ $\gamma \times \gamma \times \dots \times \gamma = \gamma^{T}$
 <GradientDecay />
 
 <div class="text-xs opacity-60 text-right">Biểu đồ vẽ từ công thức với hệ số tự chọn, chưa phải mạng thật. Số đo trên mạng thật: slide 20.</div>
+
+<style>
+.prob p { margin: .35rem 0; line-height: 1.45; }
+</style>
 
 <!--
 **[Người 1 · ~2 phút]**
@@ -332,7 +346,8 @@ Tín hiệu yếu dần vì bị **nhân với số khác 1** nhiều lần.
 </div>
 
 <style>
-.card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: .6rem 1rem; font-size: .85rem; }
+.card { background: #fff; border: 1px solid #e2e8f0; border-top: 4px solid #3b82f6; border-radius: 12px; padding: .5rem 1rem; font-size: .82rem; box-shadow: 0 8px 20px -14px rgba(15, 23, 42, .35); }
+.card p { margin: .35rem 0; }
 .card h3 { margin-top: 0 !important; color: #1d4ed8; }
 </style>
 
@@ -389,12 +404,25 @@ Vậy ai đã nhìn ra vấn đề này và sửa nó?
 
 ---
 layout: center
-class: text-center
+class: text-center hero
 ---
 
-# Bên trong một ô LSTM
+<div class="kicker">Tiếp theo · Phần 2</div>
 
-<div class="text-xl opacity-80 mt-4">Một <b>ô nhớ</b> giữ thông tin lâu dài + <b>3 cổng</b>: quên · ghi · đọc</div>
+<h1 class="sec-title">Bên trong một ô LSTM</h1>
+
+<div class="text-xl opacity-80 mt-2">Một <b class="text-blue-600">ô nhớ</b> giữ thông tin lâu dài + <b>3 cổng</b></div>
+
+<div class="flex justify-center gap-4 mt-8">
+  <div class="gate-pill" style="--c: #dc2626">quên</div>
+  <div class="gate-pill" style="--c: #16a34a">ghi</div>
+  <div class="gate-pill" style="--c: #7c3aed">đọc</div>
+</div>
+
+<style>
+.sec-title { font-size: 3rem !important; margin-top: 1rem !important; }
+.gate-pill { min-width: 7rem; padding: .6rem 1rem; border-radius: 14px; background: #fff; border: 2px solid var(--c); color: var(--c); font-weight: 700; font-size: 1.15rem; box-shadow: 0 8px 20px -10px var(--c); }
+</style>
 
 <!--
 **[Người 1 · ~0.5 phút]**
@@ -403,7 +431,8 @@ Tóm lại phần của mình: RNN hay quên vì tín hiệu lỗi bị nhân đ
 -->
 
 ---
-
+part: 2
+---
 
 # Hai loại bộ nhớ: trạng thái ẩn và trạng thái ô nhớ
 
@@ -412,7 +441,7 @@ Tóm lại phần của mình: RNN hay quên vì tín hiệu lỗi bị nhân đ
 
 **RNN: chỉ có một bộ nhớ**
 
-<svg viewBox="0 0 260 180" style="width: 85%; margin: auto">
+<svg viewBox="0 0 260 180" style="width: 72%; margin: auto">
   <defs><marker id="a9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
   <rect x="70" y="40" width="120" height="90" rx="14" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
   <text x="130" y="92" text-anchor="middle" style="font-size:20px">tanh</text>
@@ -427,7 +456,7 @@ Tóm lại phần của mình: RNN hay quên vì tín hiệu lỗi bị nhân đ
 
 **LSTM: thêm <span class="text-blue-600">một bộ nhớ dài hạn</span>**
 
-<LstmCell active="state" />
+<LstmCell active="state" width="80%" />
 
 </div>
 </div>
@@ -463,7 +492,7 @@ Ba cổng tiếp theo điều khiển ba việc trên băng chuyền: xóa, ghi,
 
 ---
 
-# Cổng 1 · Cổng quên (*forget gate*): giữ lại bao nhiêu bộ nhớ cũ?
+# Cổng 1 · Cổng quên (*forget gate*): giữ lại bao nhiêu?
 
 <div class="grid grid-cols-[1.3fr_1fr] gap-6 items-center">
 <LstmCell active="f" />
@@ -734,6 +763,121 @@ Công thức nằm dưới mỗi dòng cho bạn nào muốn đối chiếu vớ
 
 ---
 
+# Thử tay: theo dõi bộ nhớ của một ô LSTM
+
+<LstmSimulator />
+
+<div class="text-xs opacity-70 mt-1">Mô hình đồ chơi để nhìn các cổng: <b>1 lớp, 1 ô LSTM, 1 nơ-ron</b> (bộ nhớ là 1 con số), trọng số nhóm đặt bằng tay, không qua huấn luyện.</div>
+
+<!--
+**[Người 2 · ~3 phút] — slide demo, nên để chủ động thời gian**
+
+Bây giờ mình chạy thử một ô LSTM thu nhỏ để các bạn nhìn thấy các cổng hoạt động. Nói rõ kích thước: đây là 1 lớp, chỉ có 1 nơ-ron, nên bộ nhớ chỉ là một con số. Nó làm đúng bốn việc ở slide trước: quên, chuẩn bị ghi, cập nhật, đọc.
+
+Trọng số của ô này nhóm đặt sẵn, không phải học, sao cho đầu vào có ý nghĩa dễ hiểu, như ô chú thích bên phải: đầu vào bằng 2 nghĩa là "đây là thông tin quan trọng, hãy ghi nhớ", giống chữ "Pháp". Đầu vào bằng 0 là một từ bình thường. Đầu vào bằng trừ 2 nghĩa là "hết ngữ cảnh rồi, hãy xóa đi".
+
+**Demo 1, kéo thanh "Đầu vào" (chưa bấm chạy, sơ đồ cập nhật ngay):**
+- Đặt bằng 2: cổng ghi mở gần hết, bộ nhớ tăng lên gần 1. Dòng chữ phía dưới sơ đồ báo ô sẽ GHI.
+- Đặt bằng trừ 2: cổng quên đóng về gần 0 nên bộ nhớ cũ bị XÓA, đồng thời cổng ghi cũng đóng nên không có gì mới được ghi vào. Kết quả là bộ nhớ mới về gần 0.
+
+**Demo 2, bấm "Làm lại" rồi bấm "Chạy bước" liên tục.** Chuỗi mẫu là: một từ quan trọng, ba từ bình thường, một tín hiệu xóa, rồi một từ bình thường. Sau mỗi lần bấm, thanh đầu vào tự đặt sẵn giá trị tiếp theo của chuỗi mẫu; nếu muốn thử khác thì kéo thanh trước khi bấm, mô phỏng sẽ dùng đúng giá trị mình chọn.
+- Bước 1, từ quan trọng: bộ nhớ lên khoảng 0.99, mạng ghi nhớ.
+- Bước 2 đến 4, từ bình thường: cổng ghi gần như đóng nên không ghi gì mới, cổng quên mở khoảng 96% nên bộ nhớ chỉ giảm rất chậm: 0.96, 0.93, 0.89. Các bạn nhìn cột "bộ nhớ" trong bảng bên phải: thông tin được GIỮ.
+- Bước 5, tín hiệu xóa: cổng quên đóng nên bộ nhớ cũ bị xóa, cổng ghi cũng đóng nên không ghi gì mới. Bộ nhớ rơi về gần 0: mạng đã XÓA thông tin "từ quan trọng" lúc trước.
+
+**Demo 3, tích ô "Tự chỉnh các cổng bằng tay":** kéo cổng quên lên 1, cổng ghi về 0. Khi đó bộ nhớ mới bằng đúng bộ nhớ cũ, không mất gì cả. Đây chính là ô nhớ giữ nguyên của Hochreiter năm 1997.
+
+Trong mạng thật, các trọng số này không do mình đặt mà được học từ dữ liệu.
+-->
+
+---
+
+# Ví dụ: các cổng mở / đóng thế nào trên câu mẫu?
+
+<div class="mt-4">
+<GateHeatmap />
+</div>
+
+<v-clicks>
+
+- Tại **"Pháp"**: <span class="text-green-600">cổng ghi ≈ 1</span> → ghi "Pháp" vào bộ nhớ
+- Ở các từ giữa: <span class="text-red-600">cổng quên ≈ 1</span> → giữ nguyên bộ nhớ; <span class="text-green-600">cổng ghi ≈ 0</span> → không ghi đè
+- Tại **"tiếng"**: <span class="text-purple-600">cổng đọc ≈ 1</span> → đọc "Pháp" ra để đoán từ tiếp theo
+
+</v-clicks>
+
+<!--
+**[Người 2 · ~1 phút]**
+
+Quay lại câu ví dụ ở đầu bài. Giả sử LSTM đã học tốt, thì khi đọc câu này, ở mỗi từ ba cổng sẽ mở hay đóng như trong bảng. Màu càng đậm thì cổng càng mở. Các con số ở đây do nhóm tự đặt để minh họa ý tưởng, không phải đo từ một mô hình thật.
+
+[click] Tại chữ "Pháp", cổng ghi mở để ghi thông tin vào bộ nhớ.
+
+[click] Ở các từ ở giữa, cổng quên mở để giữ nguyên bộ nhớ, còn cổng ghi đóng để không ghi đè lên.
+
+[click] Tại chữ "tiếng", cổng đọc mở để lấy chữ "Pháp" ra và đoán từ tiếp theo.
+
+Đến đây là toàn bộ cách một ô LSTM hoạt động khi đọc câu. Câu hỏi còn lại là: vì sao phép cộng đơn giản này lại giúp LSTM học được những gì ở xa? Mời bạn Hiếu.
+-->
+
+---
+part: 3
+---
+
+# Vì sao LSTM học được những gì ở xa?
+
+<div class="text-sm mb-3">Khi học, tín hiệu lỗi phải đi ngược từ chữ "tiếng" về chữ "Pháp". Hai mạng cho nó đi theo hai con đường khác nhau:</div>
+
+<div class="grid grid-cols-2 gap-5">
+<div v-click="1" class="p-3 rounded bg-orange-50">
+
+### <span class="text-orange-600">RNN: đi qua bản tóm tắt</span>
+
+Mỗi bước lùi, tín hiệu bị nhân với **trọng số** và **đạo hàm của tanh**, một hệ số khó giữ đúng bằng 1:
+
+<div class="text-center my-2">0.9 × 0.9 × … × 0.9 (50 lần) ≈ <b class="text-orange-600">0.005</b></div>
+
+→ đến chữ "Pháp" thì tín hiệu gần như **mất hết**
+
+</div>
+<div v-click="2" class="p-3 rounded bg-blue-50">
+
+### <span class="text-blue-600">LSTM: đi dọc băng chuyền bộ nhớ</span>
+
+Vì bộ nhớ mới = cổng quên × bộ nhớ cũ **+** …, mỗi bước lùi tín hiệu **chỉ nhân với cổng quên**, không có trọng số, không có tanh:
+
+<div class="text-center my-2">0.99 × 0.99 × … × 0.99 (50 lần) ≈ <b class="text-blue-600">0.6</b></div>
+
+→ mạng **tự học** giữ cổng quên gần 1 khi cần nhớ
+
+</div>
+</div>
+
+<div v-click="3" class="mt-3 text-center text-sm p-2 rounded bg-slate-100">
+
+LSTM vẫn có những "đường vòng" giống RNN (qua đầu ra của bước trước), các đường này vẫn có thể yếu dần.
+Nhưng chỉ cần **còn một con đường thẳng** qua bộ nhớ là tín hiệu vẫn về tới nơi.
+
+</div>
+
+<!--
+**[Người 3 · ~2.5 phút] — slide quan trọng nhất của phần này**
+
+Cảm ơn Minh. Phần của mình trả lời câu hỏi: vì sao LSTM học được những gì ở xa, còn RNN thì không?
+
+Khi huấn luyện, mạng đoán sai ở chữ cuối, và tín hiệu lỗi phải đi ngược về tận chữ "Pháp" để mạng biết chữ "Pháp" quan trọng. RNN và LSTM cho tín hiệu này đi theo hai con đường khác nhau.
+
+[click] Ở RNN, tín hiệu chỉ có một đường là đi ngược qua các bản tóm tắt. Mỗi lần lùi một bước, nó bị nhân với trọng số và với đạo hàm của hàm tanh. Hệ số này rất khó giữ đúng bằng 1. Giả sử nó là 0.9, thì sau 50 bước chỉ còn khoảng 0.005, tức nửa phần trăm. Đến chữ "Pháp" thì tín hiệu gần như không còn gì.
+
+[click] Ở LSTM, nhớ lại công thức bộ nhớ của bạn Minh: bộ nhớ mới bằng cổng quên nhân bộ nhớ cũ, cộng phần mới. Vì là phép cộng, khi đi ngược dọc theo băng chuyền bộ nhớ, tín hiệu chỉ bị nhân với cổng quên, không có trọng số, không có tanh. Mà cổng quên là thứ mạng tự học được. Khi cần nhớ, mạng học cách giữ cổng quên gần 1. Với cổng quên bằng 0.99, sau 50 bước tín hiệu vẫn còn khoảng 60 phần trăm.
+
+[click] Nói cho công bằng: LSTM vẫn còn những đường vòng giống RNN, đi qua đầu ra của bước trước, và các đường này vẫn có thể yếu dần. Nhưng tín hiệu là tổng của tất cả các đường. Chỉ cần còn một con đường thẳng qua bộ nhớ là tín hiệu vẫn về tới chữ "Pháp". Đây chính là ý tưởng "giữ nguyên rồi cộng thêm" của Hochreiter năm 1991.
+
+Vậy con đường thẳng này nằm ở đâu? Để thấy tận mắt, mình viết LSTM thành code.
+-->
+
+---
+
 # Viết thành code: ô LSTM = ghép các hàm sơ cấp
 
 <div class="text-sm mb-2">Chỉ dùng NumPy, không dùng PyTorch hay Keras. Cả ô LSTM được ghép từ <b>5 hàm sơ cấp</b> (<i>elementary functions</i>):</div>
@@ -786,9 +930,9 @@ def lstm(X, W, b, H):                   # X: (số mẫu, số bước, số đ�
 </style>
 
 <!--
-**[Người 2 · ~2 phút]**
+**[Người 3 · ~2 phút]**
 
-Bốn việc vừa rồi viết thành code thì trông thế nào? Nhóm tự viết lại LSTM chỉ bằng thư viện NumPy, không dùng PyTorch hay Keras, để thấy rằng bên trong không có gì bí ẩn: cả ô LSTM chỉ là ghép năm hàm sơ cấp lại với nhau, hay còn gọi là elementary functions.
+Bốn việc mà bạn Minh vừa trình bày, viết thành code thì trông thế nào? Nhóm tự viết lại LSTM chỉ bằng thư viện NumPy, không dùng PyTorch hay Keras, để thấy rằng bên trong không có gì bí ẩn: cả ô LSTM chỉ là ghép năm hàm sơ cấp lại với nhau, hay còn gọi là elementary functions.
 
 Bên trái là năm hàm đó. [click] Hàm thứ nhất: nhân đầu vào với trọng số rồi cộng độ lệch. [click] Hai hàm tiếp theo là sigmoid, cho ra số từ 0 đến 1 giống độ mở của van, và tanh, nén số về khoảng từ trừ 1 đến 1. [click] Hàm thứ tư nhân từng phần tử với nhau. [click] Hàm cuối cùng cộng từng phần tử.
 
@@ -798,126 +942,14 @@ Bên phải là một ô LSTM. [click] Dòng đầu tiên: ghép đầu vào hi�
 
 [click] Nếu viết gộp lại, cả ô LSTM chỉ là một biểu thức lồng các hàm sơ cấp vào nhau, như dòng ở dưới cùng.
 
-Vì mỗi hàm sơ cấp đều có đạo hàm đơn giản, nên khi học, ta chỉ cần đi ngược lại đúng các dòng này. Bạn Hiếu sẽ cho xem phần đi ngược ở phần sau.
--->
-
----
-
-# Thử tay: theo dõi bộ nhớ của một ô LSTM
-
-<LstmSimulator />
-
-<div class="text-xs opacity-70 mt-1">Mô hình đồ chơi để nhìn các cổng: <b>1 lớp, 1 ô LSTM, 1 nơ-ron</b> (bộ nhớ là 1 con số), trọng số nhóm đặt bằng tay, không qua huấn luyện.</div>
-
-<!--
-**[Người 2 · ~3 phút] — slide demo, nên để chủ động thời gian**
-
-Bây giờ mình chạy thử một ô LSTM thu nhỏ để các bạn nhìn thấy các cổng hoạt động. Nói rõ kích thước: đây là 1 lớp, chỉ có 1 nơ-ron, nên bộ nhớ chỉ là một con số. Nó chính là hàm ô LSTM vừa viết ở slide trước, chỉ thu nhỏ lại.
-
-Trọng số của ô này nhóm đặt sẵn, không phải học, sao cho đầu vào có ý nghĩa dễ hiểu, như ô chú thích bên phải: đầu vào bằng 2 nghĩa là "đây là thông tin quan trọng, hãy ghi nhớ", giống chữ "Pháp". Đầu vào bằng 0 là một từ bình thường. Đầu vào bằng trừ 2 nghĩa là "hết ngữ cảnh rồi, hãy xóa đi".
-
-**Demo 1, kéo thanh "Đầu vào" (chưa bấm chạy, sơ đồ cập nhật ngay):**
-- Đặt bằng 2: cổng ghi mở gần hết, bộ nhớ tăng lên gần 1. Dòng chữ phía dưới sơ đồ báo ô sẽ GHI.
-- Đặt bằng trừ 2: cổng quên đóng về gần 0 nên bộ nhớ cũ bị XÓA, đồng thời cổng ghi cũng đóng nên không có gì mới được ghi vào. Kết quả là bộ nhớ mới về gần 0.
-
-**Demo 2, bấm "Làm lại" rồi bấm "Chạy bước" liên tục.** Chuỗi mẫu là: một từ quan trọng, ba từ bình thường, một tín hiệu xóa, rồi một từ bình thường. Sau mỗi lần bấm, thanh đầu vào tự đặt sẵn giá trị tiếp theo của chuỗi mẫu; nếu muốn thử khác thì kéo thanh trước khi bấm, mô phỏng sẽ dùng đúng giá trị mình chọn.
-- Bước 1, từ quan trọng: bộ nhớ lên khoảng 0.99, mạng ghi nhớ.
-- Bước 2 đến 4, từ bình thường: cổng ghi gần như đóng nên không ghi gì mới, cổng quên mở khoảng 96% nên bộ nhớ chỉ giảm rất chậm: 0.96, 0.93, 0.89. Các bạn nhìn cột "bộ nhớ" trong bảng bên phải: thông tin được GIỮ.
-- Bước 5, tín hiệu xóa: cổng quên đóng nên bộ nhớ cũ bị xóa, cổng ghi cũng đóng nên không ghi gì mới. Bộ nhớ rơi về gần 0: mạng đã XÓA thông tin "từ quan trọng" lúc trước.
-
-**Demo 3, tích ô "Tự chỉnh các cổng bằng tay":** kéo cổng quên lên 1, cổng ghi về 0. Khi đó bộ nhớ mới bằng đúng bộ nhớ cũ, không mất gì cả. Đây chính là ô nhớ giữ nguyên của Hochreiter năm 1997.
-
-Trong mạng thật, các trọng số này không do mình đặt mà được học từ dữ liệu.
--->
-
----
-
-# Ví dụ: các cổng mở / đóng thế nào trên câu mẫu?
-
-<div class="mt-4">
-<GateHeatmap />
-</div>
-
-<v-clicks>
-
-- Tại **"Pháp"**: <span class="text-green-600">cổng ghi ≈ 1</span> → ghi "Pháp" vào bộ nhớ
-- Ở các từ giữa: <span class="text-red-600">cổng quên ≈ 1</span> → giữ nguyên bộ nhớ; <span class="text-green-600">cổng ghi ≈ 0</span> → không ghi đè
-- Tại **"tiếng"**: <span class="text-purple-600">cổng đọc ≈ 1</span> → đọc "Pháp" ra để đoán từ tiếp theo
-
-</v-clicks>
-
-<!--
-**[Người 2 · ~1 phút]**
-
-Quay lại câu ví dụ ở đầu bài. Giả sử LSTM đã học tốt, thì khi đọc câu này, ở mỗi từ ba cổng sẽ mở hay đóng như trong bảng. Màu càng đậm thì cổng càng mở. Các con số ở đây do nhóm tự đặt để minh họa ý tưởng, không phải đo từ một mô hình thật.
-
-[click] Tại chữ "Pháp", cổng ghi mở để ghi thông tin vào bộ nhớ.
-
-[click] Ở các từ ở giữa, cổng quên mở để giữ nguyên bộ nhớ, còn cổng ghi đóng để không ghi đè lên.
-
-[click] Tại chữ "tiếng", cổng đọc mở để lấy chữ "Pháp" ra và đoán từ tiếp theo.
-
-Đến đây là toàn bộ cách một ô LSTM hoạt động khi đọc câu. Câu hỏi còn lại là: vì sao phép cộng đơn giản này lại giúp LSTM học được những gì ở xa? Mời bạn Hiếu.
--->
-
----
-
-
-# Vì sao LSTM học được những gì ở xa?
-
-<div class="text-sm mb-3">Khi học, tín hiệu lỗi phải đi ngược từ chữ "tiếng" về chữ "Pháp". Hai mạng cho nó đi theo hai con đường khác nhau:</div>
-
-<div class="grid grid-cols-2 gap-5">
-<div v-click="1" class="p-3 rounded bg-orange-50">
-
-### <span class="text-orange-600">RNN: đi qua bản tóm tắt</span>
-
-Mỗi bước lùi, tín hiệu bị nhân với **trọng số** và **đạo hàm của tanh**, một hệ số khó giữ đúng bằng 1:
-
-<div class="text-center my-2">0.9 × 0.9 × … × 0.9 (50 lần) ≈ <b class="text-orange-600">0.005</b></div>
-
-→ đến chữ "Pháp" thì tín hiệu gần như **mất hết**
-
-</div>
-<div v-click="2" class="p-3 rounded bg-blue-50">
-
-### <span class="text-blue-600">LSTM: đi dọc băng chuyền bộ nhớ</span>
-
-Vì bộ nhớ mới = cổng quên × bộ nhớ cũ **+** …, mỗi bước lùi tín hiệu **chỉ nhân với cổng quên**, không có trọng số, không có tanh:
-
-<div class="text-center my-2">0.99 × 0.99 × … × 0.99 (50 lần) ≈ <b class="text-blue-600">0.6</b></div>
-
-→ mạng **tự học** giữ cổng quên gần 1 khi cần nhớ
-
-</div>
-</div>
-
-<div v-click="3" class="mt-3 text-center text-sm p-2 rounded bg-slate-100">
-
-LSTM vẫn có những "đường vòng" giống RNN (qua đầu ra của bước trước), các đường này vẫn có thể yếu dần.
-Nhưng chỉ cần **còn một con đường thẳng** qua bộ nhớ là tín hiệu vẫn về tới nơi.
-
-</div>
-
-<!--
-**[Người 3 · ~2.5 phút] — slide quan trọng nhất của phần này**
-
-Cảm ơn Minh. Phần của mình trả lời câu hỏi: vì sao LSTM học được những gì ở xa, còn RNN thì không?
-
-Khi huấn luyện, mạng đoán sai ở chữ cuối, và tín hiệu lỗi phải đi ngược về tận chữ "Pháp" để mạng biết chữ "Pháp" quan trọng. RNN và LSTM cho tín hiệu này đi theo hai con đường khác nhau.
-
-[click] Ở RNN, tín hiệu chỉ có một đường là đi ngược qua các bản tóm tắt. Mỗi lần lùi một bước, nó bị nhân với trọng số và với đạo hàm của hàm tanh. Hệ số này rất khó giữ đúng bằng 1. Giả sử nó là 0.9, thì sau 50 bước chỉ còn khoảng 0.005, tức nửa phần trăm. Đến chữ "Pháp" thì tín hiệu gần như không còn gì.
-
-[click] Ở LSTM, nhớ lại công thức bộ nhớ của bạn Minh: bộ nhớ mới bằng cổng quên nhân bộ nhớ cũ, cộng phần mới. Vì là phép cộng, khi đi ngược dọc theo băng chuyền bộ nhớ, tín hiệu chỉ bị nhân với cổng quên, không có trọng số, không có tanh. Mà cổng quên là thứ mạng tự học được. Khi cần nhớ, mạng học cách giữ cổng quên gần 1. Với cổng quên bằng 0.99, sau 50 bước tín hiệu vẫn còn khoảng 60 phần trăm.
-
-[click] Nói cho công bằng: LSTM vẫn còn những đường vòng giống RNN, đi qua đầu ra của bước trước, và các đường này vẫn có thể yếu dần. Nhưng tín hiệu là tổng của tất cả các đường. Chỉ cần còn một con đường thẳng qua bộ nhớ là tín hiệu vẫn về tới chữ "Pháp". Đây chính là ý tưởng "giữ nguyên rồi cộng thêm" của Hochreiter năm 1991.
+Vì mỗi hàm sơ cấp đều có đạo hàm đơn giản, nên khi học, ta chỉ cần đi ngược lại đúng các dòng này. Đó là slide tiếp theo, và cũng là chỗ con đường thẳng xuất hiện.
 -->
 
 ---
 
 # Trong code: con đường thẳng nằm ở đâu?
 
-<div class="text-sm mb-2">Khi học, đi ngược lại đúng các dòng của slide 15. Mỗi hàm sơ cấp có một hàm đạo hàm (quy tắc dây chuyền cho đúng một phép toán):</div>
+<div class="text-sm mb-2">Khi học, đi ngược lại đúng các dòng của slide trước. Mỗi hàm sơ cấp có một hàm đạo hàm (quy tắc dây chuyền cho đúng một phép toán):</div>
 
 <div class="grid grid-cols-[1fr_1.35fr] gap-4 code-sm">
 <div>
@@ -960,7 +992,7 @@ def lstm_cell_back(dh, dc, cache):
     return dx, dh_prev, dc_prev, dW, db
 ```
 
-<div v-click="1" class="text-xs mt-1 p-2 rounded bg-blue-50">Dòng 5: tín hiệu về bộ nhớ cũ = tín hiệu ở bộ nhớ mới × <b>cổng quên</b>. Không có trọng số, không có tanh. Đây là con đường thẳng của slide 18.</div>
+<div v-click="1" class="text-xs mt-1 p-2 rounded bg-blue-50">Dòng 5: tín hiệu về bộ nhớ cũ = tín hiệu ở bộ nhớ mới × <b>cổng quên</b>. Không có trọng số, không có tanh. Đây là con đường thẳng của slide 17.</div>
 
 </div>
 </div>
@@ -974,11 +1006,11 @@ def lstm_cell_back(dh, dc, cache):
 <!--
 **[Người 3 · ~2 phút]**
 
-Ở slide 15, bạn Minh đã cho xem phần tính xuôi của LSTM viết bằng NumPy. Khi học, máy phải đi ngược lại để tính tín hiệu lỗi. Vì ô LSTM chỉ là ghép năm hàm sơ cấp, nên phần đi ngược cũng chỉ là năm hàm đạo hàm, như bên trái. Mỗi hàm nhận tín hiệu lỗi ở đầu ra và trả về tín hiệu lỗi ở đầu vào. Ví dụ đạo hàm của phép cộng là chia đều tín hiệu cho cả hai vế, đạo hàm của phép nhân là nhân chéo.
+Slide trước là phần tính xuôi của LSTM viết bằng NumPy. Khi học, máy phải đi ngược lại để tính tín hiệu lỗi. Vì ô LSTM chỉ là ghép năm hàm sơ cấp, nên phần đi ngược cũng chỉ là năm hàm đạo hàm, như bên trái. Mỗi hàm nhận tín hiệu lỗi ở đầu ra và trả về tín hiệu lỗi ở đầu vào. Ví dụ đạo hàm của phép cộng là chia đều tín hiệu cho cả hai vế, đạo hàm của phép nhân là nhân chéo.
 
 Bên phải là phần đi ngược của một ô LSTM. Các bạn để ý nó đi ngược đúng các dòng của phần tính xuôi, từ dòng đọc ra, lên dòng cập nhật bộ nhớ, lên các cổng, cuối cùng là phép nhân trọng số.
 
-[click] Dòng quan trọng nhất là dòng thứ năm. Tín hiệu lỗi gửi về bộ nhớ của bước trước bằng tín hiệu ở bộ nhớ hiện tại nhân với cổng quên. Chỉ vậy thôi: không có trọng số, không có tanh. Đây chính là con đường thẳng mà mình vừa nói ở slide trước, giờ các bạn thấy nó nằm ở đâu trong code.
+[click] Dòng quan trọng nhất là dòng thứ năm. Tín hiệu lỗi gửi về bộ nhớ của bước trước bằng tín hiệu ở bộ nhớ hiện tại nhân với cổng quên. Chỉ vậy thôi: không có trọng số, không có tanh. Đây chính là con đường thẳng mà mình đã nói ở slide 17, giờ các bạn thấy nó nằm ở đâu trong code.
 
 [click] So với RNN: mỗi bước lùi chỉ có hai dòng, nhưng tín hiệu về bước trước luôn phải đi qua đạo hàm của tanh rồi qua trọng số. Không có đường nào tránh được hai thứ đó.
 
@@ -990,7 +1022,7 @@ Bên phải là phần đi ngược của một ô LSTM. Các bạn để ý nó
 # Đo trên mạng thật: tín hiệu lỗi về được bao xa?
 
 <div class="text-xs leading-snug p-2 rounded bg-slate-100 mb-3">
-<div><b>Mô hình</b> (viết bằng NumPy, code ở slide 15 và 19): mỗi bước nhận <b>2 số</b> → <b>1 lớp</b> RNN hoặc LSTM, <b>64 nơ-ron ẩn</b> → <b>1 nơ-ron</b> đầu ra. LSTM có 17 217 trọng số, RNN có 4 353.</div>
+<div><b>Mô hình</b> (viết bằng NumPy, code ở slide 18 và 19): mỗi bước nhận <b>2 số</b> → <b>1 lớp</b> RNN hoặc LSTM, <b>64 nơ-ron ẩn</b> → <b>1 nơ-ron</b> đầu ra. LSTM có 17 217 trọng số, RNN có 4 353.</div>
 <div><b>Huấn luyện</b> 5000 lần cập nhật trên bài toán cộng, chuỗi <b>100 bước</b>: phải nhớ một số được đánh dấu ở nửa đầu chuỗi (chi tiết ở thí nghiệm 3). Đo trên 2000 mẫu kiểm tra.</div>
 </div>
 
@@ -999,7 +1031,7 @@ Bên phải là phần đi ngược của một ô LSTM. Các bạn để ý nó
 <!--
 **[Người 3 · ~2 phút]**
 
-Hai slide trước là lý thuyết và code. Bây giờ mình đo thật. Nói rõ mô hình: mỗi bước nhận vào 2 số, đi qua 1 lớp RNN hoặc 1 lớp LSTM có 64 nơ-ron ẩn, cuối cùng là 1 nơ-ron cho ra kết quả. LSTM có khoảng 17 nghìn trọng số, RNN khoảng 4 nghìn 4, vì LSTM có 4 bộ trọng số. Cả hai được huấn luyện bằng chính code NumPy vừa rồi, trên bài toán cộng với chuỗi 100 bước. Bài toán này mình sẽ nói kỹ ở thí nghiệm 3; ở đây chỉ cần biết mô hình phải nhớ một con số ở nửa đầu chuỗi cho tới cuối chuỗi.
+Ba slide trước là lý thuyết và code. Bây giờ mình đo thật. Nói rõ mô hình: mỗi bước nhận vào 2 số, đi qua 1 lớp RNN hoặc 1 lớp LSTM có 64 nơ-ron ẩn, cuối cùng là 1 nơ-ron cho ra kết quả. LSTM có khoảng 17 nghìn trọng số, RNN khoảng 4 nghìn 4, vì LSTM có 4 bộ trọng số. Cả hai được huấn luyện bằng chính code NumPy vừa rồi, trên bài toán cộng với chuỗi 100 bước. Bài toán này mình sẽ nói kỹ ở thí nghiệm 3; ở đây chỉ cần biết mô hình phải nhớ một con số ở nửa đầu chuỗi cho tới cuối chuỗi.
 
 Cách đo: ở bước cuối, gửi một tín hiệu lỗi ngược về, rồi xem ở từng bước trong quá khứ còn lại bao nhiêu phần trăm so với ở bước cuối. Trục dọc chia theo cấp số nhân, mỗi vạch nhỏ đi một trăm nghìn lần.
 
@@ -1228,12 +1260,13 @@ Thí nghiệm thứ ba đẩy độ dài lên mức cực đoan. Đây là bài 
 -->
 
 ---
-
+part: 4
+---
 
 # Hai mẹo khi tự cài đặt LSTM
 
-<div class="grid grid-cols-2 gap-6 mt-2">
-<div>
+<div class="grid grid-cols-2 gap-6 mt-2 tips">
+<div class="use-card" style="--c: #2563eb">
 
 ### 1 · Cho cổng quên "hơi mở" từ đầu
 
@@ -1249,7 +1282,7 @@ for name, p in lstm.named_parameters():
 ```
 
 </div>
-<div v-click>
+<div v-click class="use-card" style="--c: #dc2626">
 
 ### 2 · Vẫn cần "cắt" tín hiệu lỗi quá lớn
 
@@ -1288,8 +1321,6 @@ Mẹo thứ nhất: cho cổng quên hơi mở ngay từ đầu. Lúc mới kh�
 ### Hai chiều (*bidirectional*)
 Một LSTM đọc **từ trái sang phải**, một LSTM đọc **từ phải sang trái**, rồi ghép kết quả → mỗi từ được hiểu nhờ **cả phần trước lẫn phần sau** của câu
 
-<div v-click class="text-red-600 text-sm mt-2">⚠️ Không dùng hai chiều khi phải dự đoán tương lai (<b>dự báo giá</b>, viết tiếp câu): lúc học mô hình được "nhìn trước" tương lai, nhưng lúc dùng thật thì không có → kết quả học được là ảo (rò rỉ dữ liệu)</div>
-
 </div>
 <div>
 
@@ -1318,8 +1349,6 @@ Thứ nhất là xếp chồng nhiều lớp. Đầu ra ở từng bước của
 
 Thứ hai là đọc hai chiều. Dùng hai LSTM riêng: một cái đọc câu từ trái sang phải, một cái đọc từ phải sang trái, rồi ghép kết quả lại. Như vậy mỗi từ được hiểu nhờ cả phần trước lẫn phần sau của câu. Cách này hợp với các bài toán có sẵn cả câu, ví dụ phân loại một bình luận là khen hay chê.
 
-[click] Nhưng lưu ý: không dùng hai chiều khi phải dự đoán tương lai, ví dụ dự báo giá cổ phiếu như thí nghiệm 2. Lúc học, mô hình sẽ được nhìn trước dữ liệu tương lai, nhưng lúc dùng thật thì không có. Kết quả trong lúc học sẽ đẹp một cách ảo. Lỗi này gọi là rò rỉ dữ liệu.
-
 Bên phải là code PyTorch. Muốn có hai cách mở rộng này, chỉ cần đặt số lớp bằng 2 và bật chế độ hai chiều. Thêm một tham số nữa là dropout, giúp mô hình đỡ học vẹt: trong lúc học, mỗi lần mô hình bỏ qua ngẫu nhiên khoảng 20 phần trăm tín hiệu đi từ lớp dưới lên lớp trên, nên nó không thể chỉ dựa vào vài đường cố định.
 
 Một chỗ hay gây lỗi khi viết code: đọc hai chiều thì ở mỗi bước có hai kết quả, một của chiều xuôi, một của chiều ngược, và PyTorch nối chúng lại thành một. Nên đầu ra dài gấp đôi: nếu mỗi chiều cho 64 số thì đầu ra có 128 số. Lớp phía sau phải được khai báo nhận 128 số chứ không phải 64, nếu không chương trình sẽ báo lỗi sai kích thước.
@@ -1329,10 +1358,10 @@ Một chỗ hay gây lỗi khi viết code: đọc hai chiều thì ở mỗi b�
 
 # LSTM dùng để làm gì, và giới hạn của nó
 
-<div class="grid grid-cols-2 gap-6">
-<div>
+<div class="grid grid-cols-2 gap-6 use">
+<div class="use-card" style="--c: #16a34a">
 
-### Ứng dụng
+### ✅ Ứng dụng
 - **Cả chuỗi → một nhãn** (*many-to-one*): bình luận khen hay chê, đơn hàng có bị hủy không
 - **Mỗi bước một nhãn** (*many-to-many*): nhận dạng giọng nói, gán từ loại
 - **Chuỗi → chuỗi** (*seq2seq*): dịch máy
@@ -1340,22 +1369,22 @@ Một chỗ hay gây lỗi khi viết code: đọc hai chiều thì ở mỗi b�
 - **Sinh dữ liệu**: viết văn bản, sáng tác nhạc, chữ viết tay
 
 </div>
-<div>
+<div class="use-card" style="--c: #dc2626">
 
-### Giới hạn
+### ⚠️ Giới hạn
 - Phải đọc **lần lượt**: bước sau phải chờ bước trước → **không chạy song song** được trên GPU (*Graphics Processing Unit* – card đồ họa)
 - Chuỗi rất dài (hàng nghìn từ): mọi thứ phải nhồi vào **một bộ nhớ có kích thước cố định**
 - Gấp **4 lần** trọng số so với RNN
 
-<div v-click class="mt-4 p-3 rounded bg-slate-100">
-
-→ **Attention** (2014) → **Transformer** (2017): bỏ cách đọc lần lượt, mỗi từ **nhìn thẳng** vào mọi từ khác trong câu
-
-<span class="text-sm">Dòng phát triển: RNN (1990) → LSTM (1997) → Transformer (2017)</span>
-
 </div>
 </div>
+
+<div v-click class="mt-4 p-3 rounded bg-slate-100 text-center">
+
+→ **Attention** (2014) → **Transformer** (2017): bỏ cách đọc lần lượt, mỗi từ **nhìn thẳng** vào mọi từ khác trong câu · <span class="text-sm opacity-80">RNN (1990) → LSTM (1997) → Transformer (2017)</span>
+
 </div>
+
 
 <!--
 **[Người 4 · ~1.5 phút]**
@@ -1369,25 +1398,165 @@ LSTM cũng có giới hạn. Lớn nhất là phải đọc lần lượt: muố
 
 ---
 
+# Khi nào nên chọn LSTM?
+
+<div class="grid grid-cols-2 gap-6 when">
+<div class="use-card" style="--c: #16a34a">
+
+### ✅ Nên dùng LSTM khi
+- Dữ liệu **có thứ tự**: đảo thứ tự thì ý nghĩa thay đổi
+- **Quan hệ dài hạn** quan trọng: thông tin ở xa ảnh hưởng tới kết quả <span class="ref">(thí nghiệm 2, 3)</span>
+- Dữ liệu **không quá lớn**: LSTM học ổn với lượng dữ liệu vừa phải
+- Cần xử lý **tuần tự, theo thời gian thực**: có bước mới thì chỉ cần cập nhật bộ nhớ (cảm biến, giọng nói trực tiếp)
+
+</div>
+<div class="use-card" style="--c: #64748b">
+
+### 🤔 Không nhất thiết khi
+- **Chuỗi ngắn**, chỉ vài bước gần nhất có ích → RNN hoặc mô hình đơn giản là đủ <span class="ref">(thí nghiệm 1)</span>
+- Dữ liệu **không có thứ tự** (bảng thông thường) → MLP, cây quyết định
+- Chuỗi **rất dài** và cần **huấn luyện song song** trên GPU → Transformer
+
+</div>
+</div>
+
+<div v-click class="mt-4 p-3 rounded bg-amber-50 text-center">
+
+Không chọn LSTM **chỉ vì dữ liệu có yếu tố thời gian**.
+Bắt đầu bằng một **mô hình cơ sở** (*baseline*) đơn giản → thử RNN, LSTM → **so sánh kết quả** trên cùng dữ liệu kiểm tra.
+
+</div>
+
+<style>
+.when .use-card li { font-size: .88rem; }
+.when .ref { font-size: .75rem; color: #64748b; }
+</style>
+
+<!--
+**[Người 4 · ~2 phút]**
+
+Sau khi biết LSTM làm được gì và vướng ở đâu, câu hỏi thực tế nhất là: khi nào thì nên chọn nó?
+
+Cột bên trái là những trường hợp hợp với LSTM. Thứ nhất, dữ liệu phải có thứ tự, nghĩa là đảo thứ tự thì ý nghĩa thay đổi, như một câu văn hay chuỗi giá theo ngày. Thứ hai, quan hệ dài hạn phải quan trọng: thông tin ở xa thật sự ảnh hưởng tới kết quả. Đây đúng là chỗ LSTM thắng rõ trong thí nghiệm 2 và 3 của bạn Hiếu. Thứ ba, dữ liệu không quá lớn: với lượng dữ liệu vừa phải, LSTM thường học ổn, trong khi Transformer thường cần nhiều dữ liệu hơn mới phát huy. Thứ tư, khi cần xử lý tuần tự theo thời gian thực, ví dụ dữ liệu cảm biến hay giọng nói đổ về liên tục: mỗi khi có một bước mới, LSTM chỉ cần cập nhật bộ nhớ của nó một lần, không phải đọc lại cả chuỗi.
+
+Cột bên phải là những trường hợp không nhất thiết phải dùng LSTM. Chuỗi ngắn, chỉ vài bước gần nhất có ích: như thí nghiệm 1 với 8 đơn hàng, LSTM chỉ hơn RNN rất ít mà tốn gấp 4 lần trọng số. Dữ liệu không có thứ tự, ví dụ một bảng thông tin khách hàng: khi đó dùng MLP hay cây quyết định là hợp hơn. Và chuỗi rất dài, cần huấn luyện song song trên card đồ họa: đó là đất của Transformer.
+
+[click] Điều quan trọng nhất của slide này: đừng chọn LSTM chỉ vì dữ liệu có yếu tố thời gian. Hãy bắt đầu bằng một mô hình cơ sở thật đơn giản, tiếng Anh gọi là baseline, rồi mới thử RNN, LSTM, và so sánh kết quả trên cùng một bộ dữ liệu kiểm tra. Chỉ chọn LSTM khi nó thật sự tốt hơn, đủ để bù cho việc nặng hơn và chậm hơn.
+-->
+
+---
+clicks: 4
+---
+
+# Quy trình xây dựng một mô hình LSTM thực tế
+
+<div class="pipe">
+  <div v-for="(st, k) in [
+      ['🗂️', 'Dữ liệu thô', ''],
+      ['🧹', 'Đọc và làm sạch dữ liệu', 'thiếu, trùng, sai định dạng'],
+      ['✂️', 'Chia train / validation / test', 'theo thời gian'],
+      ['📏', 'Chuẩn hóa dữ liệu', 'học từ tập train'],
+      ['🪟', 'Tạo cửa sổ thời gian', 'N bước → bước kế tiếp'],
+      ['🧠', 'Huấn luyện LSTM', ''],
+      ['📊', 'Đánh giá', 'so với baseline'],
+      ['🚀', 'Triển khai dự báo', ''],
+    ]" :key="k" class="step" :class="{ hl: [0, 3, 4, 5, 7][$clicks] === k + 1 }">
+    <div class="no">{{ k + 1 }}</div>
+    <div class="ico">{{ st[0] }}</div>
+    <div class="lbl">{{ st[1] }}</div>
+    <div v-if="st[2]" class="sub">{{ st[2] }}</div>
+  </div>
+</div>
+
+<div class="grid grid-cols-2 gap-3 mt-5 tipsx">
+<div v-click="1" class="tip">
+  <span class="badge">3</span>
+  <div><b>Chia dữ liệu theo thời gian</b>, không xáo trộn ngẫu nhiên
+    <div class="tl"><span class="tr">train · quá khứ</span><span class="va">validation</span><span class="te">test · gần nhất</span></div>
+  </div>
+</div>
+<div v-click="2" class="tip">
+  <span class="badge">4</span>
+  <div><b>Chỉ học tham số chuẩn hóa từ tập train</b> (trung bình, độ lệch chuẩn), rồi dùng lại cho validation và test</div>
+</div>
+<div v-click="3" class="tip">
+  <span class="badge">5</span>
+  <div><b>Chọn độ dài cửa sổ dựa trên validation</b>: thử vài độ dài (ví dụ 20 / 60 / 120 ngày), không chọn bằng tập test</div>
+</div>
+<div v-click="4" class="tip">
+  <span class="badge">7</span>
+  <div><b>Luôn so sánh với một baseline đơn giản</b>: "ngày mai giống hôm nay", trung bình vài ngày gần nhất, đoán loại phổ biến nhất</div>
+</div>
+</div>
+
+<style>
+.pipe { display: grid; grid-template-columns: repeat(8, 1fr); gap: 1.1rem; margin-top: .4rem; }
+.step { position: relative; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: .55rem .35rem .5rem; text-align: center; box-shadow: 0 8px 18px -14px rgba(15, 23, 42, .4); transition: all .3s; }
+.step:not(:last-child)::after { content: '→'; position: absolute; right: -1.05rem; top: 50%; transform: translateY(-50%); color: #7c3aed; font-weight: 800; font-size: 1rem; }
+.step .no { position: absolute; top: .25rem; left: .45rem; font-size: .65rem; font-weight: 800; color: #94a3b8; }
+.step .ico { font-size: 1.5rem; line-height: 1.2; }
+.step .lbl { margin-top: .25rem; font-size: .74rem; font-weight: 700; line-height: 1.25; color: #1e293b; }
+.step .sub { margin-top: .2rem; font-size: .6rem; line-height: 1.2; color: #64748b; }
+.step.hl { border-color: #7c3aed; background: #f5f3ff; transform: translateY(-4px); box-shadow: 0 12px 24px -12px rgba(124, 58, 237, .6); }
+.tip { display: flex; gap: .6rem; align-items: flex-start; background: #fff; border: 1px solid #e2e8f0; border-left: 4px solid #7c3aed; border-radius: 10px; padding: .5rem .75rem; font-size: .82rem; line-height: 1.4; box-shadow: 0 6px 16px -12px rgba(15, 23, 42, .35); }
+.badge { flex: none; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: #7c3aed; color: #fff; font-size: .72rem; font-weight: 800; display: grid; place-items: center; margin-top: .05rem; }
+.tl { display: flex; margin-top: .35rem; font-size: .62rem; font-weight: 700; color: #fff; border-radius: 6px; overflow: hidden; }
+.tl span { padding: .12rem .4rem; white-space: nowrap; }
+.tl .tr { flex: 6; background: #2563eb; }
+.tl .va { flex: 2; background: #f59e0b; }
+.tl .te { flex: 2.4; background: #dc2626; }
+</style>
+
+<!--
+**[Người 4 · ~2.5 phút]**
+
+Slide này gom lại toàn bộ các bước để làm một mô hình LSTM thật, từ dữ liệu thô tới lúc đem đi dự báo. Đi theo mũi tên từ trái sang phải: có dữ liệu thô, đọc vào và làm sạch, tức là xử lý giá trị bị thiếu, bị trùng hoặc sai định dạng. Sau đó chia dữ liệu thành ba phần: tập huấn luyện, tiếng Anh là train, tập kiểm định là validation, và tập kiểm tra là test. Tiếp theo là chuẩn hóa để các con số về cùng một thang đo, rồi cắt dữ liệu thành các cửa sổ thời gian, ví dụ lấy 60 ngày để đoán ngày kế tiếp. Có cửa sổ rồi mới tới bước huấn luyện LSTM, đánh giá, và cuối cùng là triển khai để dự báo thật.
+
+Phần huấn luyện thì các bạn đã nghe nhiều rồi. Thực tế, lỗi hay nằm ở những bước xung quanh. Mình nhấn vào bốn chỗ.
+
+[click] Bước 3: chia dữ liệu theo thời gian, không xáo trộn ngẫu nhiên. Quá khứ dùng để học, giai đoạn sau dùng để kiểm định, giai đoạn gần nhất dùng để kiểm tra. Nếu xáo trộn, mô hình sẽ được học trên những ngày nằm sau ngày nó phải đoán, tức là được nhìn trước tương lai, và kết quả sẽ đẹp một cách ảo. Lỗi này gọi là rò rỉ dữ liệu. Thí nghiệm cổ phiếu của nhóm cũng làm vậy: học trên 1995 đến 2016, kiểm tra trên 2020 đến 2025.
+
+[click] Bước 4: chỉ học tham số chuẩn hóa từ tập train. Trung bình và độ lệch chuẩn phải tính trên tập train, rồi dùng đúng các con số đó cho validation và test. Nếu tính trên toàn bộ dữ liệu thì thông tin của tương lai đã lọt vào lúc học, lại là rò rỉ dữ liệu.
+
+[click] Bước 5: độ dài cửa sổ là một lựa chọn, không có con số đúng sẵn. Hãy thử vài độ dài, ví dụ 20, 60, 120 ngày như thí nghiệm 2, và chọn dựa trên tập validation. Tập test chỉ dùng một lần ở cuối, nếu không thì mình đang vô tình chọn mô hình theo đáp án.
+
+[click] Bước 7: luôn so sánh với một baseline đơn giản. Ví dụ đoán ngày mai giống hôm nay, lấy trung bình vài ngày gần nhất, hay với bài phân loại thì luôn đoán loại phổ biến nhất. Ở thí nghiệm 3, đường "đoán mò" chính là một baseline như vậy. LSTM chỉ đáng dùng khi nó vượt baseline một cách rõ ràng.
+-->
+
+---
+
 # Tổng kết
 
-<div class="grid grid-cols-3 gap-6 text-center mt-10">
-<div class="p-5 rounded bg-blue-50">
-
-<b>🧠 Bộ nhớ dài hạn</b> (trạng thái ô nhớ): chạy thẳng như băng chuyền, chỉ bị xóa bớt và cộng thêm
-
+<div class="grid grid-cols-3 gap-6 mt-8 sum">
+<div class="sum-card" style="--c: #2563eb">
+  <div class="sum-no">1</div>
+  <div class="sum-ico">🧠</div>
+  <div class="sum-h">Bộ nhớ dài hạn</div>
+  <div class="sum-t">Trạng thái ô nhớ chạy thẳng như <b>băng chuyền</b>, chỉ bị xóa bớt và cộng thêm</div>
 </div>
-<div class="p-5 rounded bg-green-50">
-
-<b>🚪 3 cổng</b>: quên · ghi · đọc, mỗi cổng là một "cái van" mở từ 0 đến 1
-
+<div class="sum-card" style="--c: #16a34a">
+  <div class="sum-no">2</div>
+  <div class="sum-ico">🚪</div>
+  <div class="sum-h">3 cổng</div>
+  <div class="sum-t"><b>quên · ghi · đọc</b>, mỗi cổng là một "cái van" mở từ 0 đến 1</div>
 </div>
-<div class="p-5 rounded bg-amber-50">
-
-<b>➕ Phép cộng</b>: tạo con đường thẳng cho tín hiệu lỗi → học được những gì ở xa; chuỗi càng dài càng hơn RNN
-
+<div class="sum-card" style="--c: #d97706">
+  <div class="sum-no">3</div>
+  <div class="sum-ico">➕</div>
+  <div class="sum-h">Phép cộng</div>
+  <div class="sum-t">Tạo <b>con đường thẳng</b> cho tín hiệu lỗi → học được những gì ở xa; chuỗi càng dài càng hơn RNN</div>
 </div>
 </div>
+
+<div class="mt-8 text-center text-sm opacity-70">RNN (1990) → <b class="text-blue-600">LSTM (1997)</b> → Transformer (2017)</div>
+
+<style>
+.sum-card { position: relative; background: #fff; border: 1px solid #e2e8f0; border-top: 5px solid var(--c); border-radius: 14px; padding: 1.4rem 1.2rem 1.2rem; text-align: center; box-shadow: 0 12px 28px -16px rgba(15, 23, 42, .35); }
+.sum-no { position: absolute; top: .6rem; right: .9rem; font-size: 1.6rem; font-weight: 800; color: var(--c); opacity: .18; }
+.sum-ico { font-size: 2.4rem; line-height: 1; }
+.sum-h { margin-top: .6rem; font-size: 1.15rem; font-weight: 700; color: var(--c); }
+.sum-t { margin-top: .4rem; font-size: .9rem; line-height: 1.45; color: #334155; }
+</style>
 
 <!--
 **[Người 4 · ~1.5 phút]**
@@ -1399,70 +1568,30 @@ Một: LSTM thêm vào RNN một bộ nhớ dài hạn, gọi là trạng thái 
 Hai: ba cổng quên, ghi và đọc, mỗi cổng là một cái van mở từ 0 đến 1, quyết định xóa bao nhiêu, ghi bao nhiêu, đọc ra bao nhiêu.
 
 Ba: nhờ phép cộng trong cách cập nhật bộ nhớ, tín hiệu lỗi có một con đường thẳng để đi ngược về quá khứ, nên LSTM học được những gì ở xa. Ba thí nghiệm của nhóm cho thấy chuỗi càng dài thì LSTM càng hơn RNN rõ.
-
-Để kiểm tra lại, mình có bốn câu hỏi trắc nghiệm nhanh.
--->
-
----
-
-# Câu hỏi 1/4
-
-<QuizSet :n="1" />
-
-<!--
-**[Người 4 · ~0.5 phút]**
-
-Mời các bạn chọn đáp án, mình sẽ bấm vào đáp án được chọn: ô chuyển xanh là đúng, đỏ là sai; nếu sai thì mời bạn khác chọn lại. Khi chọn đúng, lời giải hiện ra bên dưới.
-
-**(Demo)** Câu 1: ba cổng của LSTM là gì? Đáp án A: cổng quên, cổng ghi, cổng đọc. Các đáp án còn lại là thành phần của mô hình khác: tích chập và gộp thuộc CNN; truy vấn, khóa, giá trị thuộc Transformer.
--->
-
----
-
-# Câu hỏi 2/4
-
-<QuizSet :n="2" />
-
-<!--
-**[Người 4 · ~0.5 phút]**
-
-**(Demo)** Câu 2: các cổng dùng hàm kích hoạt nào? Đáp án B, sigmoid, vì cổng cần một con số từ 0 đến 1, giống độ mở của cái van: 0 là đóng hẳn, 1 là mở hết.
--->
-
----
-
-# Câu hỏi 3/4
-
-<QuizSet :n="3" />
-
-<!--
-**[Người 4 · ~0.5 phút]**
-
-**(Demo)** Câu 3: thành phần nào là bộ nhớ dài hạn của LSTM? Đáp án C, trạng thái ô nhớ. Nó chỉ bị xóa bớt và cộng thêm, không bị viết lại toàn bộ ở mỗi bước, nên giữ được thông tin lâu.
--->
-
----
-
-# Câu hỏi 4/4
-
-<QuizSet :n="4" />
-
-<!--
-**[Người 4 · ~0.5 phút]**
-
-**(Demo)** Câu 4: LSTM sinh ra để khắc phục vấn đề nào của RNN? Đáp án A: tín hiệu lỗi yếu dần rồi biến mất, nên RNN không học được mối liên hệ giữa hai từ cách xa nhau.
 -->
 
 ---
 layout: center
-class: text-center
+class: text-center hero
 ---
 
-# Cảm ơn thầy và các bạn đã lắng nghe!
+<div class="kicker">Hỏi đáp</div>
 
-<div class="mt-8 text-sm opacity-70">
-Tài liệu: Hochreiter & Schmidhuber (1997) · Gers và cộng sự (2000) · Graves & Schmidhuber (2005) · Bengio và cộng sự (1994) · colah.github.io/posts/2015-08-Understanding-LSTMs
+<h1 class="thanks grad-text">Cảm ơn thầy và các bạn đã lắng nghe!</h1>
+
+<div class="mt-4">
+<span class="chip">Nguyễn Phú Đại</span><span class="chip">Trần Vũ Tiến Minh</span><span class="chip">Trần Đình Hiếu</span><span class="chip">Phạm Thanh An</span>
 </div>
+
+<div class="glass mx-auto mt-10 px-5 py-3 text-xs text-left refs">
+<div class="font-bold text-slate-600 mb-1">Tài liệu tham khảo</div>
+Hochreiter & Schmidhuber (1997) · Gers và cộng sự (2000) · Graves & Schmidhuber (2005) · Bengio và cộng sự (1994) · colah.github.io/posts/2015-08-Understanding-LSTMs
+</div>
+
+<style>
+.thanks { font-size: 2.6rem !important; font-weight: 800; margin-top: 1rem !important; }
+.refs { max-width: 44rem; color: #475569; line-height: 1.5; }
+</style>
 
 <!--
 **[Cả nhóm · ~2 phút]**
